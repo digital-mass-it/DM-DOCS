@@ -4,3 +4,737 @@ description: "Conventions that apply to all Digital Mass projects."
 ---
 
 {/* TODO: add content */}
+# Apex Code Standards
+
+# Apex Class Structure
+
+The content in an Apex class needs to be declared in the following order:
+
+1. static CONSTANT or static variable  
+2. instance variable  
+3. constructor  
+4. static methods  
+5. instance methods
+
+   
+The order within each group should follow these rules:
+
+1. access modifier (from most open to least open)  
+   1. public  
+   2. protected   
+   3. private (default)  
+2. alphabetical order
+
+### Example
+
+```java
+public class DeclarationOrder {
+    //CONSTANTS
+    public static final String CONSTANT_ALL_CAPS_WITH_UNDERSCORE = 'constant';
+    public static final Integer MAX_QUERY_SIZE_FOR_CASE = 200;
+
+    //Class (static) variables
+    public static String publicClassVariable;
+    protected static String protectedClassVariable;
+    private static String privateClassVariable;
+
+    //Instance (non-static) variables
+    public String publicInstanceVariable;
+    protected String protectedInstanceVariable;
+    private String privateInstanceVariable;
+
+    //Constructors
+    public DeclarationOrder() {
+    }
+
+    protected DeclarationOrder() {
+    }
+
+    private DeclarationOrder() {
+    }
+
+    //Class (static) methods
+    public static void publicClassMethod() {
+    }
+
+    protected static void protectedStaticMethod() {
+    }
+
+    private static void privateStaticMethod() {
+    }
+
+    //Instance methods
+    public void publicInstanceMethod() {
+    }
+
+    protected void protectedInstanceMethod() {
+    }
+
+    private void privateInstanceMethod() {
+    }
+}
+```
+
+# Naming Conventions
+
+Naming conventions make programs more understandable by making them easier to read. They can also give information about the function of the identifier—for example, whether it’s a constant, variable, or class—which can be helpful in understanding the code. The conventions given in this section are high level.
+
+| Identifier Type | Rules for Naming | Examples |
+| :---- | :---- | :---- |
+| Classes | Class names should be nouns, in mixed case with the first letter of each word capitalized. Try to keep your class names simple and descriptive. Use whole words—avoid acronyms and abbreviations (unless the abbreviation is much more widely used than the long form, such as URL or HTML). |  `class Raster; class ImageSprite;`  |
+| Interfaces | Interface names should be capitalized like class names.  |  `interface RasterDelegate; interface Storing;`  |
+| Methods | Methods should be verbs, in mixed case with the first letter lowercase, with the first letter of each internal word capitalized. |  `run(); runFast(); getBackground();`  |
+| Variables | Variable names should be mixed case with a lowercase first letter. Internal words start with capital letters. Variable names should be short yet meaningful. The choice of a variable name should be mnemonic— that is, designed to indicate to the casual observer the intent of its use.   One-character variable names should be avoided except for temporary “throwaway” variables. Common names for temporary variables are i, j, k, m, and n for integers. Example  `for (Integer i; i < myArray.length(); i++) {     Object myObject = myArray[i]; }`  |  `Integer numberOfRows; String customerComments; Decimal myWidth;`  |
+| Constants | The names of variables declared class constants and of ANSI constants should be all uppercase with words separated by underscores (“\_”). (ANSI constants should be avoided, for ease of debugging.) |  `public static final Integer MIN_WIDTH = 4; private final Integer MAX_WIDTH = 999; public final Integer GET_THE_CPU = 1;`  |
+
+# Naming Conventions for Common Apex Classes
+
+## Postfix/Suffix
+
+Consistent file naming helps keep component easy to recognize and find.  Here are some examples of Postfix/Suffix to use when naming your Apex Classes.  ***Note: Salesforce Apex Class names can be up to 40 characters long.***
+
+| Functional Type | Name Suffix | Examples |
+| :---- | :---- | :---- |
+| Test class | Test | AccountTriggerHandlerTest *Note: Ensure your class names allow for its corresponding Test class, while staying within the 40 character name limit, to allow grouping classes with their Test class when viewing in alphabetical order.* |
+| Trigger | Trigger | AccountTrigger CustomObjectTrigger |
+| TriggerHandler | TriggerHandler | AccountTriggerHandler CustomObjectTriggerHandler |
+| Helper Class | Helper | AccountHelper |
+| Utility Class | Utils | CommonUtils |
+| Controller | Controller | CustomController |
+| Controller Extension (Visualforce) | ControllerExt | AccountControllerExt *Note: Controller Extensions are normally used when extending a Standard Controller in Visualforce development.* |
+| Batch | Batch | AccountCreateBatch |
+| Queueable | Queueable | AccountCreateQueueable |
+| Scheduleable | Scheduleable | AccountCreateScheduleable *Note: Batch and Queueable classes that are Scheduleable should implement the Scheduleable interface and use their respective naming convention.* |
+| Invocable Action | Invocable | AccountCloneInvocable |
+| REST Service | Provider | CustomProvider |
+| SOAP Service | Provider | AccountProvider |
+| Visualforce Page | \--none-- | AccountCreate |
+| Visualforce Component | Cmp | AccountCreateCmp |
+
+## Prefix
+
+The use of Prefixes in file naming helps group modules to make them easy to recognize and find. Here are some examples of Prefixes to use when naming your Apex Classes. ***Note: Salesforce Apex Class names can be up to 40 characters long.***
+
+| Functional Type | Name Prefix/Suffix | Examples |
+| :---- | :---- | :---- |
+| Code written by Digital Mass | \--none-- | *Note: Some consultancies prefix their metadata with a two letter abbreviation to group their customizations.  This should **NOT** be done unless directed specifically by the customer.* DM\_SomeClass |
+| **TBD \- See Duncan Idaho** Web Service Model (REST) Web Service Model (SOAP) | Prefix: \<System\> Suffix: Model/Type/Definition/Schema? | **Google**CloudTranslate**Model/Type/Definition/Schema Avatar**AppointmentScheduling**Model/Type/Definition/Schema** *Note: for SOAP Services, this class would be generated from a WSDL Note: These classes are service type definitions for serialization/deserialization purposes.* |
+
+# Write ApexDoc
+
+ApexDoc is used to describe **class, method,**  and  **property**.  Good documents help other developers understand the contract, context, and usage of a class better.  Follow the principles of [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) for code formatting and code comments (Javadoc).
+
+Basic form of the doc comments starts with /\*\* and ends with \*/, and each doc comment line starts with a \*.  Please see following example for class, method, and property.
+
+## Doc Comment: Class
+
+| tags | description |
+| :---- | :---- |
+| @group | Logical grouping of the class, e.g. Account, Test, Escalation, etc. |
+| @description | Quick overview of the functionality and context of the class |
+
+### Example
+
+```java
+/**
+ * @group
+ * TestBuilder
+ * 
+ * @description
+ * A test user builder that improves test method
+ * readability and reduces deplicate setup logic
+ */
+
+public class TestUserBuilder {
+    //...
+}
+```
+
+*Note: Author, Created Date, Modified Date, and Version should not be included in the class description, as they are already tracked in source control*
+
+## Doc Comment: Method
+
+| tags | description |
+| :---- | :---- |
+| @description | Quick overview of the function |
+| @param paramName | Overview of the function parameter |
+| @return | Overview of what is being returned |
+| @example | Provide example code usage of the method |
+
+### Example
+
+```java
+//...
+
+/**
+ * 
+ * @description
+ * stubbMethod provides basic stub functionality of a given stubbed
+ * object, function name and the result to return without specifying
+ * the exact arguments
+ * 
+ * @param
+ * obj
+ * The object to be stubbed a method call
+ * 
+ * @param
+ * methodName
+ * The String value of the method to be stubbed
+ * 
+ * @param
+ * stubbedResult
+ * The method result to be stubbed
+ * 
+ * @example
+ * class Car {
+ *   public String getMake() {
+ *   }
+ * }
+ *
+ * Car stubCar = (Car)UnifyStubProvider.createStub(Car.class);
+ * UnifyStubProvider.stubMethod(stubCar, 'getMake', 'toyota');
+ * stubCar.getMake(); //this will return 'toyota'
+ */
+
+public static void stubMethod(
+    Object obj,
+    String methodName,
+    Object stubbedResult
+) {
+    Integer partialKey = getStubResultKeyHash(
+        obj,
+        methodName,
+        null,
+        null,
+        null
+    );
+
+    results.put(partialKey, stubbedResult);
+}
+
+//...
+```
+
+## Doc Comment: Property
+
+| tags | description |
+| :---- | :---- |
+| @description | Quick overview of the property |
+
+### Example
+
+```java
+/**
+ * 
+ * @description
+ * The default username created by the TestUserBuilder
+ */
+
+public static final String DEFAULT_USER_NAME = 'testuserbuilder@trailtwo.com';
+```
+
+# Constant
+
+## Do Not Hard Code Salesforce Id
+
+Don’t hardcode Salesforce Ids into queries or code.  When deploying Apex code between different Sandbox or Production environments, or installing AppExchange packages, it is highly possible that **Ids might change**.  The code will fail after migration and will bring tedious post-deployment work to change those Ids: a long-term maintenance nightmare.
+
+ 
+
+Instead, get the targeted record Ids by performing a SOQL query filtered by their **unique fields** (example: Record Type Name).  The following example queries for the record types in the code, stores the dataset in a Map collection for easy retrieval, and ultimately avoids any hardcoding.
+
+### Example
+
+```java
+//Record type name constants are defined in other class or inner class
+class AccountRecordType {
+    public static final String HEALTHCARE = 'Healthcare';
+    public static final String HIGH_TECH = 'High Tech';
+}
+
+Set<String> accountRecordTypeNames = new Set<String>{
+    AccountRecordType.HEALTHCARE,
+    AccountRecordType.HIGH_TECH
+};
+
+//Query for the Account record types
+List<RecordType> rtypes = [
+    SELECT Name, Id
+    FROM RecordType
+    WHERE Name IN :accountRecordTypeNames
+];
+
+//Create a map between the Record Type Name and Id for easy retrieval
+Map<String, String> accountRecordTypes = new Map<String, String>();
+for (RecordType rt : rtypes) {
+    accountRecordTypes.put(rt.Name, rt.Id);
+}
+
+//Usage
+for (Account a : Trigger.new) {
+    //Use the Map collection to dynamically retrieve the Record Type Id
+    //Avoid hardcoding Ids in the Apex code
+    if (
+        a.RecordTypeId == accountRecordTypes.get(AccountRecordType.HEALTHCARE)
+    ) {
+        //do some logic here...
+    } else if (
+        a.RecordTypeId == accountRecordTypes.get(AccountRecordType.HIGH_TECH)
+    ) {
+        //do some logic here for a different record type...
+    }
+}
+```
+
+*Do not create on general file to store global constants.  Instead use project specific constants inside the project classes and custom metadata (to avoid merge conflicts in source control)*
+
+## Use Shared Prefix to Group Constant
+
+Best choice is to use enum over string constants.  If enum is overkill for the scope of the work, try to group constants using an isolated class that contains only constants.  Both ways, developers can easily leverage autocompletion in IDE to finish long constant names.  
+   
+However, for any reasons that different types of constants exist in the same class, please use shared prefixes to group constants, so other developers can distinguish between constant types at a glance.  Even though this approach forms an unnatural pronouncing sequence.
+
+### Example
+
+**BAD: Constant names not group by usage types**
+
+```java
+public class SomeUtility {
+    public static final String ACCOUNT_OBJECT_TYPE = 'ACCOUNT_TYPE';
+    public static final String ACCOUNT_ERROR_NAME = 'account error';
+    public static final Integer ACCOUNT_ERROR_RATE_THRESHOLD = 5;
+    public static final String ACCOUNT_ERROR_MESSAGE = 'wrong account id is provided';
+    public static final String ASSET_OBJECT_TYPE = 'ASSET_TYPE';
+    public static final String ASSET_ERROR_NAME = 'asset error';
+    public static final Integer ASSET_ERROR_RATE_THRESHOLD = 10;
+    public static final String ASSET_ERROR_MESSAGE = 'wrong asset id is provided';
+    public static final String CASE_OBJECT_TYPE = 'CASE_TYPE';
+    public static final String CASE_ERROR_NAME = 'case error';
+    public static final Integer CASE_ERROR_RATE_THRESHOLD = 15;
+    public static final String CASE_ERROR_MESSAGE = 'wrong case id is provided';
+}
+```
+
+**Good: Group with Enum, Class or Prefix**
+
+```java
+//enum is type safe, more robust option
+public enum ObjectType {
+    ACCOUNT_TYPE,
+    ASSET_TYPE,
+    CASE_TYPE
+}
+
+//group by class is less-safe, but easier to autocomplete
+public class ErrorRateThreshold {
+    public static final Integer ACCOUNT_ERROR = 5;
+    public static final Integer ASSET_ERROR = 10;
+    public static final Integer CASE_ERROR = 15;
+}
+
+//group by usage type prefix
+public class SomeUtility {
+    public static final String NAME_ERROR_ACCOUNT = 'account error';
+    public static final String NAME_ERROR_ASSET = 'asset error';
+    public static final String NAME_ERROR_CASE = 'case error';
+    public static final String ERROR_MESSAGE_ACCOUNT = 'wrong account id is provided';
+    public static final String ERROR_MESSAGE_ASSET = 'wrong asset id is provided';
+    public static final String ERROR_MESSAGE_CASE = 'wrong case id is provided';
+}
+```
+
+## Do Not Duplicate Constant
+
+One of the benefits of having constants is to reduce maintenance costs to update hardcoded values.  However, if two or more constants mean the same thing, they should be consolidated into a single constant declaration.
+
+### Example
+
+**BAD: Duplicate Constants**
+
+```java
+class AppleService {
+    public static final Static NAME_APPLE = 'apple';
+    //...
+}
+
+class PeachService {
+    public static final String NAME_PEACH = 'peach';
+    public String convert (String sourceFruit) {
+        if(sourceFruit == AppleService.NAME_APPLE) {
+            return NAME_PEACH;
+        }
+        //...
+    }
+}
+
+@IsTest
+class FruitTest {
+    static final String NAME_APPLE = 'apple';
+    static final String NAME_PEACH = 'peach';
+    
+    @TestMethod
+    static void testConvertAppleToPeach() {
+        System.assertEquals(NAME_PEACH,newPeachService().convert(NAME_APPLE));
+    }
+}
+```
+
+ 
+
+**Good: Reuse Same Constant (Enum is even better)**
+
+```java
+enum Fruit {
+    APPLE,
+    PEACH
+}
+
+class PeachService {
+    public String convert(Fruit sourceFruit) {
+        if (sourceFruit == Fruit.APPLE) {
+            return Fruit.PEACH;
+        }
+        //...
+    }
+}
+
+@IsTest
+class FruitTest {
+    @IsTest
+    static void testConvertAppleToPeach() {
+        System.assertEquals(
+            Fruit.PEACH,
+            newPeachService().convert(Fruit.APPLE)
+        );
+    }
+}
+```
+
+# Exception Handling
+
+Exception-handling is a very important aspect of your application, and one that is often overlooked.  The end user should never see a raw error message resulting from your code and the goal should be to either use try catch blocks to catch unhandled exceptions and/or use addError() method to display user-friendly messages to the end user.
+
+### Example
+
+```java
+private void processUpdateLeads(Lead app, Map<Id, Lead> oldLeadMap) {
+    if (app.Legal_Customer_Id__c == null) {
+        app.Legal_Customer_Id__c.addError(
+            'Needtosetlegal customerId' +
+            'before requesting reseller activation'
+        );
+    } else if (app.Reseller_Contract__c == null) {
+        app.Reseller_Contract__c.addError(
+            'Needtoselectcontract before ' + 'requesting reseller activation'
+        );
+    }
+}
+```
+
+Use try-catch-finally statements to catch exceptions as they occur and specify the type of exceptions if possible.
+
+# SOQL and Governor Limits
+
+Avoid SOQL Queries or DML statements inside FOR loops.  Otherwise, database operations are invoked once for each loop iteration, making it easy to reach governor limits (100 SOQL queries per Apex request; 150 DML operations per request).  Instead, move any database operations outside of for loops and use collection variables like Sets, Lists, and Maps to perform bulk DMLs/queries.
+
+### Example
+
+```java
+List<User> usersToUpdate = new List<User>();
+for (User user : userList) {
+    user.UserName = user.UserName.replaceAll('\\.(?=[^.]*$)', '@');
+    usersToUpdate.add(user);
+}
+update usersToUpdate;
+```
+
+Use FOR loops to query the large data sets.  Since the maximum number of records that can be retrieved via a SOQL query is 50,000, put that SOQL query inside a for loop since that helps chunk the query results into batches of 200 records.  Otherwise you will hit the governor limits for query returns and get a runtime exception.
+
+### Example
+
+```java
+List<Account> accts = new List<Account>();
+
+for (List<Account> acct : [
+    SELECT Id, Name
+    FROM Account
+    WHERE Name LIKE 'Acme'
+]) {
+    //Your logic here
+    accts.addAll(acct);
+}
+
+update accts;
+```
+
+# SOQL Style
+
+Follow the following steps for SOQL inside Apex code:
+
+1. Avoid right alignment of query  
+2. Break after \[, indent four spaces.  For breaks inside the query, indent two spaces  
+     
+3. Use upper case for SOQL keywords
+
+### Example
+
+```java
+Map<Id, Opportunity> mapOpp = new Map<Id, Opportunity>(
+    [
+      SELECT
+        Id,
+        Name,
+        Amount
+      FROM Opportunity
+      WHERE
+        Id IN :setOppIds
+        AND RecordTypeId = :OpptyCloudRecTypeId
+        AND Key_Deal__c = TRUE
+      ORDER BY Amount DESC
+      LIMIT 100
+    ]
+);
+```
+
+# Naming Conventions
+
+## Apex Classes
+
+Use a singular noun PascalCase (UpperCamelCase) for Class names and lowerCamelCase for method and variable names.
+
+ 
+
+**Good: Apex class names and test class names share the same common base name.**
+
+*Note: Do not start a class with Test.  Use the common base name and append Test*
+
+### Example
+
+ErrorLogger.cls
+
+ErrorLoggerTest.cls
+
+## Apex Test Classes
+
+**Test names should include the condition being tested and the expected outcome.**
+
+ 
+
+Each test should explicitly name not only the method being tested, but also the expected outcome and sometimes specific details of the state or input being tested.  Tests named in this style are clearer since the names make it obvious to the reader what is being tested, and often more concise since the name tends to focus the scope of the test and prevent it from expanding over time.  Use the English work “Should” to link the conditions and expected results.
+
+### Example
+
+```java
+@IsTest
+static void logDmlResultsShouldLogWithAListOfDatabaseErrors();
+```
+
+ **Do not start a test method with “Test”.  Use \<test condition\>Should\<expected outcome\> convention.**
+
+### Example
+
+```java
+@IsTest
+static void logDmlResultsShouldLogWithAListOfDatabaseErrors() {
+    //...
+}
+
+//positive test
+
+@IsTest
+static void updateLeadWithOpenStatusShouldChangeLeadStatusToClosed() {
+    //...
+}
+
+//negative test
+
+@IsTest
+static void updateLeadWithClosedStatusShouldNotChangeLeadStatusToOpen() {
+    //...
+}
+```
+
+## Name Considerations (In Addition to Conventions)
+
+In a codebase, names matter.  Well-chosen names can lead to self-documenting code that is a delight to read, while poorly chosen names can lead to code that will confuse future developers, including the original author.  Readers may need help understanding the underlying business process, but they should be able to understand your code without extensive historical context and footnotes\!
+
+### Variable Names Are Documentation
+
+A variable is much more than a memory address \- it is an opportunity to name the value at that address in a descriptive way.  tmp is not a helpful variable name; in this code a name like numSweetRoses would be easier to understand.
+
+### Function Names Are a Table of Contents
+
+In addition to reducing code duplication, functions are also a mechanism for naming pieces of logic.  This allows readers to quickly comprehend the high-level structure of any unit of code (program, library, or even just a bigger function) before deciding on which parts they need to spend their precious energy diving into the details.  It’s often worth factoring code into a descriptively named function even if it’s only called once\!
+
+### Constant Names Embody a Meaning
+
+Even if a constant is used in only one place, naming it (1) is a form of one-word documentation that all readers are guaranteed to see; (2) distinguishes the usage of this constant from other constants that happen to have the same value; and (3) creates a central place for further documentation, so readers using Code Search or an IDE can simply hover to learn more.
+
+#### Example
+
+**Bad: Hardcoded Value and Bad Names**
+
+```java
+public static Boolean isSweetEnough(Meadow meadow) {
+    Integer tmp = 0;
+    for (Rose rose : meadow.getRoses()) {
+        if (rose.isSweet()) {
+            tmp++;
+        }
+        return tmp >= (0.7 * meadow.getRoses().size());
+    }
+}
+```
+
+ 
+
+**Good: Use Constant and Informative Names**
+
+```java
+/**
+ * 
+ * @description
+ * Minimum fraction of flowers needed to determine meadow smell
+ */
+private static final Double MIN_DENSITY_FOR_SMELL_EFFECT = 0.7;
+public static Boolean isSweetEnough(Meadow meadow) {
+    return numSweetRoses(meadow) >=
+        (MIN_DENSITY_FOR_SMELL_EFFECT * meadow.getRoses().size());
+}
+
+private static Integer numSweetRoses(Meadow meadow) {
+    //...
+}
+```
+
+### Annotations
+
+Class, method, and variable annotations should be in PascalCase (UpperCamelCase).  Each annotation should be listed on a line of its own.  Annotations with parameters should be formatted to respect line lengths.  Annotation parameters should use label=‘value’ formatting (no spaces before or after \= character).
+
+#### Example
+
+**Bad**
+
+```java
+@SuppressWarnings('PMD.EmptyStatementBlock')
+public with sharing class MyController {
+    private MyController() {
+
+    }
+    
+    @InvocableMethod(label = 'Do Foo' description = 'Does foo using the flux capacitory, then returns Bar')
+    public static List<MyController.Response> doFoo() {
+        //...
+    }
+    
+    public class Response {
+        @InvocableVariable @auraEnabled
+        public Boolean isSuccess;
+
+        @InvocableVariable @auraEnabled
+        public String barValue;
+    }
+}
+```
+
+**Good**
+
+```java
+@SuppressWarnings('PMD.EmptyStatementBlock')
+public with sharing class MyController {
+    private MyController() {
+    }
+
+    @InvocableMethod(
+        label='Do Foo'
+        description='Does foo using the flux capacitory, then returns Bar'
+    )
+    public static List<MyController.Response> doFoo() {
+        //...
+    }
+
+    public class Response {
+        @InvocableVariable
+        @AuraEnabled
+        public Boolean isSuccess;
+
+        @InvocableVariable
+        @AuraEnabled
+        public String barValue;
+    }
+}
+```
+
+### Other Checkpoints
+
+1. Try to keep each method with line number \< 45\.  
+2. Try to reduce the number of properties in a class.  Remove any orphaned (or obsolete) classes, properties, and methods.  
+3. Create/Update the API version to the latest version
+
+### Formatting
+
+Follow the principles of [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) for code formatting and code comments (Javadoc).  
+   
+Some highlights:
+
+* Remove extra white spaces and lines.  
+* Line wrap limit: 100 characters. Example:
+
+```java
+System.assertEquals(
+    newLead.Status,
+    STATUS_NEW,
+    'Sales_Lead_UpdateStatusAsNew workflow field update will update the Lead Status to New.'
+);
+```
+
+* Each time a new block or block-like construct is opened, the indent increases by two spaces.  For continuation lines, indent with \+4 spaces  
+* Where to break: The prime directive of line-wrapping is: prefer to break at a higher syntactic level.  
+* Vertical whitespace: A single blank line always appears between consecutive members or initializers of a class (fields, constructors, methods, nested classes, static initializers, and instance initializers).  
+* Remove System.debug() statements from the code before code review.  
+* Declare all constants with static final with CONSTANT\_CASE naming format.
+
+# Triggers and Handlers
+
+## Overview
+
+Working on triggers and trigger handlers can be quite tricky and troublesome.  This document provides general rules of thumb and best practices for trigger development.
+
+## General Rules of Thumb
+
+### No Logic Inside Trigger Definition
+
+Trigger should **NOT** contain any business logic.  You also can’t expose logic to be re-used anywhere else in your org.
+
+#### Less Maintainable
+
+Putting business logic inside trigger is bad practice.  Once the logic is introduced into trigger definition, future developers will likely do the same.  Over time, the logic inside trigger definition will be more complicated.  Mixing that with the trigger context flags (isBefore, isInsert, etc.), the fate of the trigger definition and the miserable journey of the developers are decided starting on day one.
+
+#### Harder to Test
+
+Putting logic inside the trigger definition also makes it harder to test.  In order to test business logic, a test will be required to initialize the trigger process, which will involve database operations.  The complexity and the time to test business logic increases, which unavoidably leads to fewer tests and a lower quality of code.
+
+### One Object, One Trigger, and One Handler
+
+A single Apex Trigger is all you need for one object.  If you develop multiple Triggers for a single object, you have no way of controlling the order of execution if those Triggers can run in the same contexts.  Therefore, each object (standard or custom) should only have one trigger definition and only one corresponding handler.
+
+#### Saving Developer Time
+
+Using this approach, developers will not need to do a code search to figure out what trigger definitions or handlers are involved when an object is updated.  This makes it easier to debug a trigger, to identify dependencies, and to refactor.
+
+#### Execution Order is NOT Guaranteed\!
+
+When there are multiple trigger definitions against the same object, the order of which definition getting invoked cannot be determined.  Non-deterministic behaviors are the main sources of the tricky bugs, because it can be very hard to reproduce the issue.  Avoid this at all costs.
+
+### Where to Put Business Logic?
+
+Now the logic is outside of trigger definition, what then? Put them in the handler?  
+Now that the hander’s responsibility is to route/delegate requests to the right place: the service layer.  Follow the principle of Separation of Concern and use Service Layer Pattern to group similar business logic into one or a few service classes.  Then use these service classes inside the handler to deliver the business requirement.
+
+# Reference
+
+1. [Apex Code Best Practices](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_dev_guide.htm)  
+2. [Apex Best Practices: The 15 Apex Commandments | Salesforce Developers Blog](https://developer.salesforce.com/blogs/developer-relations/2015/01/apex-best-practices-15-apex-commandments)  
+3. [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)  
+4. [Trigger and Bulk Request Best Practices](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_bestpract.htm)    
+
